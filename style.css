@@ -50,8 +50,8 @@ html, body {
 /* tetap di tengah */
 .abstract-lines .center {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 20%;
+  height: 20%;
 
   animation: spin 25s linear infinite;
 }
