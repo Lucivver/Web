@@ -2,17 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Lucivver Porto</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-
-
 </head>
 <body>
 
-  <!-- ══ LOADING SCREEN ══ -->
+  <!-- LOADING SCREEN -->
   <div id="loader">
     <div class="loader-title">Lucivver<span>.</span></div>
     <div class="loader-bar-wrap">
@@ -24,18 +22,106 @@
     </div>
   </div>
 
-  <!-- ══ MAIN CONTENT ══ -->
+  <div class="abstract-lines">
+  <div class="center">
+    <div class="line" style="--angle:0deg"></div>
+    <div class="line" style="--angle:45deg"></div>
+    <div class="line" style="--angle:90deg"></div>
+    <div class="line" style="--angle:135deg"></div>
+    <div class="line" style="--angle:180deg"></div>
+    <div class="line" style="--angle:225deg"></div>
+    <div class="line" style="--angle:270deg"></div>
+    <div class="line" style="--angle:315deg"></div>
+  </div>
+</div>
+
+  <!-- MAIN CONTENT -->
   <div id="main-content">
+
 
     <video id="bg-video" autoplay muted loop playsinline>
       <source src="Image/Bg.mp4" type="video/mp4">
     </video>
     <div class="overlay"></div>
 
+    <!-- ABSTRACT LINE OVERLAY -->
+    <div class="abstract-lines">
+      <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <!-- Long diagonal sweep lines -->
+        <path class="line-path-1"
+          d="M-100,600 C200,550 350,200 600,180 S900,300 1100,150 S1300,80 1540,200"
+          fill="none" stroke="rgba(240,237,232,0.18)" stroke-width="0.8"/>
+
+        <path class="line-path-2"
+          d="M-50,200 C150,280 300,100 500,250 S750,400 1000,280 S1250,150 1500,350"
+          fill="none" stroke="rgba(240,237,232,0.12)" stroke-width="0.6"/>
+
+        <path class="line-path-3"
+          d="M800,-50 C820,150 700,300 750,500 S850,650 800,900"
+          fill="none" stroke="rgba(240,237,232,0.1)" stroke-width="0.7"/>
+
+        <path class="line-path-4"
+          d="M-100,800 C200,700 400,750 650,650 S900,520 1100,600 S1300,700 1540,580"
+          fill="none" stroke="rgba(240,237,232,0.14)" stroke-width="0.5"/>
+
+        <path class="line-path-5"
+          d="M300,950 C320,750 200,600 350,450 S550,350 500,100"
+          fill="none" stroke="rgba(240,237,232,0.09)" stroke-width="0.6"/>
+
+        <!-- Short accent lines -->
+        <line class="line-path-3"
+          x1="1200" y1="50" x2="1440" y2="300"
+          stroke="rgba(240,237,232,0.08)" stroke-width="0.5"/>
+        <line class="line-path-2"
+          x1="0" y1="350" x2="180" y2="150"
+          stroke="rgba(240,237,232,0.1)" stroke-width="0.5"/>
+
+        <!-- Corner geometric accents -->
+        <path class="line-path-5"
+          d="M1340,0 L1440,0 L1440,120"
+          fill="none" stroke="rgba(240,237,232,0.1)" stroke-width="0.7"/>
+        <path class="line-path-5"
+          d="M0,780 L0,900 L120,900"
+          fill="none" stroke="rgba(240,237,232,0.1)" stroke-width="0.7"/>
+
+        <!-- Intersection dots -->
+        <circle class="dot-pulse" cx="700" cy="180" r="2" fill="rgba(240,237,232,0.4)"/>
+        <circle class="dot-pulse" cx="1000" cy="280" r="2" fill="rgba(240,237,232,0.3)" style="animation-delay: 6.3s, 3.8s"/>
+        <circle class="dot-pulse" cx="750" cy="500" r="2" fill="rgba(240,237,232,0.35)" style="animation-delay: 9.6s, 4.1s"/>
+        <circle class="dot-pulse" cx="350" cy="450" r="2" fill="rgba(240,237,232,0.25)" style="animation-delay: 9.9s, 4.4s"/>
+      </svg>
+    </div>
+
     <div class="page">
+
+      <!-- PORTFOLIO CARD -->
+      <div class="portfolio-card">
+        <div class="portfolio-header">
+          <span class="portfolio-title">Portfolio</span>
+          <div class="portfolio-tabs">
+            <button class="tab-btn active" onclick="switchTab('images', this)">Images</button>
+            <button class="tab-btn" onclick="switchTab('videos', this)">Videos</button>
+          </div>
+        </div>
+
+        <div class="media-grid" id="media-grid"></div>
+
+        <div class="portfolio-nav">
+          <span class="portfolio-count" id="portfolio-count">— / —</span>
+          <div class="nav-arrows">
+            <button class="nav-arrow" id="nav-prev" onclick="changePage(-1)">
+              <svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>
+            </button>
+            <button class="nav-arrow" id="nav-next" onclick="changePage(1)">
+              <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE CARD -->
       <div class="card">
 
-        <!-- HEADER -->
         <div class="header">
           <div class="avatar-wrap">
             <img src="Image/icon.jpg" alt="avatar" onerror="this.style.display='none'">
@@ -45,52 +131,39 @@
 
         <div class="divider"></div>
 
-        <!-- CONTACT -->
         <div class="section-label">Contact</div>
         <div class="new-list">
           <a class="social-btn" href="https://discord.com/users/617624176374579201" target="_blank" style="--i:5">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
-            </svg>
+            <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
             <span>Discord</span>
           </a>
+          <a class="social-btn" href="https://wa.me/6285179769545" target="_blank" style="--i:5">
+            <svg viewBox="0 0 24 24"><path d="M20.52 3.48A11.82 11.82 0 0 0 12.01 0C5.38 0 .01 5.37.01 12c0 2.12.55 4.2 1.6 6.04L0 24l6.16-1.61A11.94 11.94 0 0 0 12.01 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.2-3.49-8.52zM12.01 21.82c-1.8 0-3.56-.48-5.11-1.38l-.36-.21-3.65.95.98-3.56-.24-.37a9.73 9.73 0 0 1-1.5-5.25c0-5.4 4.39-9.79 9.79-9.79s9.79 4.39 9.79 9.79-4.39 9.82-9.79 9.82zm5.37-7.33c-.29-.15-1.7-.84-1.96-.93-.26-.1-.45-.15-.64.15-.19.29-.74.93-.91 1.12-.17.19-.34.21-.63.07-.29-.15-1.22-.45-2.33-1.43-.86-.76-1.44-1.7-1.61-1.99-.17-.29-.02-.45.13-.6.13-.13.29-.34.43-.51.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.15-.64-1.54-.88-2.11-.23-.56-.47-.48-.64-.49l-.55-.01c-.19 0-.51.07-.78.36-.26.29-1 1-1 2.43s1.02 2.81 1.16 3c.15.19 2.01 3.07 4.87 4.3.68.29 1.2.46 1.61.59.68.22 1.29.19 1.78.12.54-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34z"/></svg>
+            <span>WhatsApp</span>
           </a>
-            <a class="social-btn" href="https://wa.me/6285179769545" target="_blank" style="--i:5">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20.52 3.48A11.82 11.82 0 0 0 12.01 0C5.38 0 .01 5.37.01 12c0 2.12.55 4.2 1.6 6.04L0 24l6.16-1.61A11.94 11.94 0 0 0 12.01 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.2-3.49-8.52zM12.01 21.82c-1.8 0-3.56-.48-5.11-1.38l-.36-.21-3.65.95.98-3.56-.24-.37a9.73 9.73 0 0 1-1.5-5.25c0-5.4 4.39-9.79 9.79-9.79s9.79 4.39 9.79 9.79-4.39 9.82-9.79 9.82zm5.37-7.33c-.29-.15-1.7-.84-1.96-.93-.26-.1-.45-.15-.64.15-.19.29-.74.93-.91 1.12-.17.19-.34.21-.63.07-.29-.15-1.22-.45-2.33-1.43-.86-.76-1.44-1.7-1.61-1.99-.17-.29-.02-.45.13-.6.13-.13.29-.34.43-.51.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.15-.64-1.54-.88-2.11-.23-.56-.47-.48-.64-.49l-.55-.01c-.19 0-.51.07-.78.36-.26.29-1 1-1 2.43s1.02 2.81 1.16 3c.15.19 2.01 3.07 4.87 4.3.68.29 1.2.46 1.61.59.68.22 1.29.19 1.78.12.54-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34z"/>
-          </svg>
-          <span>WhatsApp</span>
-        </a>
-        <a class="social-btn" href="mailto:lucivvermail@gmail.com" style="--i:6">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 4v16h20V4H2zm10 9L4 6h16l-8 7zm0 2l8-7v10H4V8l8 7z"/>
-            </svg>
+          <a class="social-btn" href="mailto:lucivvermail@gmail.com" style="--i:6">
+            <svg viewBox="0 0 24 24"><path d="M2 4v16h20V4H2zm10 9L4 6h16l-8 7zm0 2l8-7v10H4V8l8 7z"/></svg>
             <span>Gmail</span>
           </a>
         </div>
 
         <div class="divider"></div>
 
-        <!-- SOCIAL MEDIA -->
         <div class="section-label">Social Media</div>
         <div class="social-grid">
           <a class="social-btn" href="https://x.com/lucky4lucifer" target="_blank" style="--i:0">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-            </svg>
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             <span>Twitter</span>
           </a>
           <a class="social-btn" href="https://instagram.com/Lucivver_" target="_blank" style="--i:2">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
-            </svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
             <span>Instagram</span>
           </a>
         </div>
 
         <div class="Drive-row">
           <a class="social-btn drive-btn" href="https://drive.google.com/drive/u/1/folders/1O1LcgzhCYMLV_0OG6gwEIl_ilZXfz9cQ" target="_blank">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 24 24">
               <path d="M7.71 3L1.15 14.25l3.55 6.15L11.26 9.15 7.71 3z"/>
               <path d="M16.29 3H7.71l3.55 6.15h8.58L16.29 3z"/>
               <path d="M22.85 14.25l-3.55-6.15-6.56 11.25h7.1l3.01-5.1z"/>
@@ -106,7 +179,7 @@
         <div class="music-player">
           <div class="music-disc" id="music-disc"></div>
           <div class="music-info">
-            <div class="music-title"> A Moment for Jazz by Larry Lovenstein </div>
+            <div class="music-title">A Moment for Jazz by Larry Lovenstein</div>
             <div class="music-progress-wrap">
               <div class="music-progress-bar" id="music-progress"></div>
             </div>
@@ -116,10 +189,175 @@
           </div>
         </div>
 
-      </div>
-    </div>
+      </div><!-- /.card -->
+    </div><!-- /.page -->
 
   </div><!-- /#main-content -->
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightboxBg(event)">
+    <div class="lightbox-inner" id="lightbox-inner">
+      <div class="lightbox-close" onclick="closeLightbox()">
+        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- PORTFOLIO CONFIG -->
+  <script src="portfolio-config.js"></script>
+
+  <!-- PORTFOLIO LOGIC -->
+  <script>
+    let currentTab = 'images';
+    let currentPage = 0;
+    const PER_PAGE = 4;
+
+    function getItems() {
+      if (typeof PORTFOLIO === 'undefined') return [];
+      return PORTFOLIO[currentTab] || [];
+    }
+
+    function switchTab(tab, btn) {
+      currentTab = tab;
+      currentPage = 0;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderGrid();
+    }
+
+    function changePage(dir) {
+      const items = getItems();
+      const maxPage = Math.max(0, Math.ceil(items.length / PER_PAGE) - 1);
+      currentPage = Math.max(0, Math.min(maxPage, currentPage + dir));
+      renderGrid();
+    }
+
+    function renderGrid() {
+      const grid = document.getElementById('media-grid');
+      const items = getItems();
+      const start = currentPage * PER_PAGE;
+      const slice = items.slice(start, start + PER_PAGE);
+      const total = items.length;
+      const maxPage = Math.ceil(total / PER_PAGE);
+
+      document.getElementById('portfolio-count').textContent =
+        total > 0 ? `${start + 1}–${Math.min(start + PER_PAGE, total)} / ${total}` : '0 / 0';
+
+      document.getElementById('nav-prev').disabled = currentPage === 0;
+      document.getElementById('nav-next').disabled = currentPage >= maxPage - 1 || total === 0;
+
+      grid.innerHTML = '';
+
+      if (total === 0) {
+        grid.innerHTML = `
+          <div class="media-empty">
+            <svg viewBox="0 0 24 24">
+              <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/>
+            </svg>
+            <p>Belum ada ${currentTab === 'images' ? 'gambar' : 'video'}.<br>
+            Edit <code>portfolio-config.js</code><br>dan tambahkan ID file Drive-mu.</p>
+          </div>`;
+        return;
+      }
+
+      grid.className = 'media-grid';
+      if (slice.length === 1) grid.classList.add('single');
+      else if (slice.length === 3) grid.classList.add('triple');
+
+      slice.forEach((item, idx) => {
+        const el = document.createElement('div');
+        el.className = 'media-item' + (currentTab === 'videos' ? ' video-item' : '');
+
+        if (currentTab === 'images') {
+          el.innerHTML = `
+            <img
+              src="https://lh3.googleusercontent.com/d/${item.id}"
+              alt="${item.title || ''}"
+              onerror="this.src='https://drive.google.com/thumbnail?id=${item.id}&sz=w400'"
+              loading="lazy">
+            <div class="play-overlay">
+              <svg viewBox="0 0 24 24"><path d="M15.5 12l-7 5V7z"/></svg>
+            </div>
+            <div class="item-label">${item.title || 'Image ' + (start + idx + 1)}</div>`;
+          el.onclick = () => openLightboxImage(item);
+        } else {
+          el.innerHTML = `
+            <img
+              src="https://drive.google.com/thumbnail?id=${item.id}&sz=w400"
+              alt="${item.title || ''}"
+              loading="lazy"
+              onerror="this.style.background='rgba(240,237,232,0.05)'">
+            <div class="play-overlay">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+            <div class="item-label">${item.title || 'Video ' + (start + idx + 1)}</div>`;
+          el.onclick = () => openLightboxVideo(item);
+        }
+
+        grid.appendChild(el);
+      });
+    }
+
+    function openLightboxImage(item) {
+      const lb = document.getElementById('lightbox');
+      const inner = document.getElementById('lightbox-inner');
+      inner.innerHTML = `
+        <div class="lightbox-close" onclick="closeLightbox()">
+          <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </div>
+        <img src="https://lh3.googleusercontent.com/d/${item.id}"
+          onerror="this.src='https://drive.google.com/uc?export=view&id=${item.id}'"
+          alt="${item.title || ''}">
+        <div class="lightbox-title">${item.title || ''}</div>`;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function openLightboxVideo(item) {
+      const lb = document.getElementById('lightbox');
+      const inner = document.getElementById('lightbox-inner');
+      // Use proper Google Drive embed URL with autoplay
+      inner.innerHTML = `
+        <div class="lightbox-close" onclick="closeLightbox()">
+          <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </div>
+        <iframe
+          src="https://drive.google.com/file/d/${item.id}/preview?rm=minimal"
+          allow="autoplay; fullscreen"
+          allowfullscreen
+          loading="eager"
+          sandbox="allow-same-origin allow-scripts allow-popups allow-forms">
+        </iframe>
+        <div class="lightbox-title">${item.title || ''}</div>`;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      const lb = document.getElementById('lightbox');
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+      // Stop video by removing iframe src
+      const iframe = lb.querySelector('iframe');
+      if (iframe) { iframe.src = ''; }
+      // Re-render to restore
+      setTimeout(() => {
+        const inner = document.getElementById('lightbox-inner');
+        inner.innerHTML = `<div class="lightbox-close" onclick="closeLightbox()">
+          <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </div>`;
+      }, 310);
+    }
+
+    function closeLightboxBg(e) {
+      if (e.target === document.getElementById('lightbox')) closeLightbox();
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+    document.addEventListener('DOMContentLoaded', renderGrid);
+  </script>
+
+  <!-- MUSIC -->
   <script>
     const audio = document.getElementById('bg-music');
     const disc  = document.getElementById('music-disc');
@@ -127,7 +365,6 @@
     const icon  = document.getElementById('play-icon');
     let playing = true;
 
-    // Pause SVG path
     const pausePath = 'M6 19h4V5H6v14zm8-14v14h4V5h-4z';
     const playPath  = 'M8 5v14l11-7z';
 
@@ -144,59 +381,42 @@
       playing = !playing;
     }
 
-    // Update progress bar
     audio.addEventListener('timeupdate', () => {
-      if (audio.duration) {
-        prog.style.width = (audio.currentTime / audio.duration * 100) + '%';
-      }
+      if (audio.duration) prog.style.width = (audio.currentTime / audio.duration * 100) + '%';
     });
 
-    // Auto-play after loader finishes (may be blocked by browser policy)
     document.addEventListener('DOMContentLoaded', () => {
-  const observer = new MutationObserver(() => {
-    const content = document.getElementById('main-content');
-
-    if (content && content.classList.contains('visible')) {
-      audio.play().then(() => {
-        // setelah berhasil play → unmute
-        audio.muted = false;
-
-        playing = true;
-        disc.classList.add('spinning');
-        icon.querySelector('path').setAttribute('d', pausePath);
-      }).catch(() => {
-        console.log("Autoplay diblokir browser");
+      const observer = new MutationObserver(() => {
+        const content = document.getElementById('main-content');
+        if (content && content.classList.contains('visible')) {
+          audio.play().then(() => {
+            audio.muted = false;
+            playing = true;
+            disc.classList.add('spinning');
+            icon.querySelector('path').setAttribute('d', pausePath);
+          }).catch(() => {});
+          observer.disconnect();
+        }
       });
-
-      observer.disconnect();
-    }
-  });
-
-  observer.observe(document.getElementById('main-content'), { attributes: true });
-});
+      observer.observe(document.getElementById('main-content'), { attributes: true });
+    });
   </script>
 
-    <script>
+  <!-- LOADER -->
+  <script>
     (function () {
       const bar     = document.getElementById('loader-bar');
       const pct     = document.getElementById('loader-percent');
       const loader  = document.getElementById('loader');
       const content = document.getElementById('main-content');
-
       let tick = 0;
-      const duration = 2000;
-      const interval = 40;
-      const steps = duration / interval;
-
+      const duration = 2000, interval = 40, steps = duration / interval;
       function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
-
       const timer = setInterval(() => {
         tick++;
-        const t = tick / steps;
-        const progress = Math.min(100, Math.round(easeOut(t) * 100));
+        const progress = Math.min(100, Math.round(easeOut(tick / steps) * 100));
         bar.style.width = progress + '%';
         pct.textContent = progress + '%';
-
         if (progress >= 100) {
           clearInterval(timer);
           setTimeout(() => {
@@ -207,6 +427,17 @@
       }, interval);
     })();
   </script>
-
+<div class="abstract-lines">
+  <div class="center">
+    <div class="line" style="--angle:0deg"></div>
+    <div class="line" style="--angle:45deg"></div>
+    <div class="line" style="--angle:90deg"></div>
+    <div class="line" style="--angle:135deg"></div>
+    <div class="line" style="--angle:180deg"></div>
+    <div class="line" style="--angle:225deg"></div>
+    <div class="line" style="--angle:270deg"></div>
+    <div class="line" style="--angle:315deg"></div>
+  </div>
+</div>
 </body>
 </html>
