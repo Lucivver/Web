@@ -94,31 +94,7 @@
 
     <div class="page">
 
-      <!-- PORTFOLIO CARD -->
-      <div class="portfolio-card">
-        <div class="portfolio-header">
-          <span class="portfolio-title">Portfolio</span>
-          <div class="portfolio-tabs">
-            <button class="tab-btn active" onclick="switchTab('images', this)">Images</button>
-            <button class="tab-btn" onclick="switchTab('videos', this)">Videos</button>
-          </div>
-        </div>
-
-        <div class="media-grid" id="media-grid"></div>
-
-        <div class="portfolio-nav">
-          <span class="portfolio-count" id="portfolio-count">— / —</span>
-          <div class="nav-arrows">
-            <button class="nav-arrow" id="nav-prev" onclick="changePage(-1)">
-              <svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>
-            </button>
-            <button class="nav-arrow" id="nav-next" onclick="changePage(1)">
-              <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
+      
       <!-- PROFILE CARD -->
       <div class="card">
 
@@ -172,6 +148,32 @@
           </a>
         </div>
 
+<!-- PORTFOLIO CARD -->
+      <div class="portfolio-card">
+        <div class="portfolio-header">
+          <span class="portfolio-title">Portfolio</span>
+          <div class="portfolio-tabs">
+            <button class="tab-btn active" onclick="switchTab('images', this)">Images</button>
+            <button class="tab-btn" onclick="switchTab('videos', this)">Videos</button>
+          </div>
+        </div>
+
+        <div class="media-grid" id="media-grid"></div>
+
+        <div class="portfolio-nav">
+          <span class="portfolio-count" id="portfolio-count">— / —</span>
+          <div class="nav-arrows">
+            <button class="nav-arrow" id="nav-prev" onclick="changePage(-1)">
+              <svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>
+            </button>
+            <button class="nav-arrow" id="nav-next" onclick="changePage(1)">
+              <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+        
         <!-- MUSIC PLAYER -->
         <audio id="bg-music" loop>
           <source src="Music/A Moment 4 Jazz.mp3" type="audio/mpeg">
