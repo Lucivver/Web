@@ -484,39 +484,57 @@ section { padding: 100px 3rem; }
 .tab-btn.active   { color: var(--white); border-bottom-color: var(--yellow); }
 .tab-btn:hover    { color: var(--white); }
 
+/* ── MASONRY GRID — tinggi adaptif per gambar ── */
 .portfolio-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2px;
+  columns: 3;
+  column-gap: 3px;
 }
+
+/* Tiap item mengisi lebar kolom, tinggi ikut rasio gambar */
 .portfolio-item {
-  aspect-ratio: 4/3;
+  break-inside: avoid;       /* jangan dipotong antar kolom */
+  display: block;
   background: var(--gray-dim);
   overflow: hidden;
   position: relative;
   cursor: pointer;
+  margin-bottom: 3px;
 }
-.portfolio-item.featured { grid-column: span 2; aspect-ratio: 16/7; }
+
+/* featured: span 2 kolom — pakai JS untuk inject style */
+.portfolio-item.featured {
+  column-span: all;
+}
 
 .portfolio-item-inner {
-  width: 100%; height: 100%;
+  width: 100%;
   background: var(--gray-mid);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.4s cubic-bezier(0.25,0,0,1);
+  display: block;
   overflow: hidden;
   position: relative;
+  line-height: 0;             /* hilangkan gap bawah img */
 }
 .portfolio-item-inner img {
-  width: 100%; height: 100%;
-  object-fit: cover;
+  width: 100%;
+  height: auto;               /* ← kunci: tinggi mengikuti rasio asli */
   display: block;
-  transition: transform 0.4s cubic-bezier(0.25,0,0,1);
+  transition: transform 0.45s cubic-bezier(0.25,0,0,1);
 }
 .portfolio-item:hover .portfolio-item-inner img { transform: scale(1.05); }
 
-/* Video badge overlay */
+/* Placeholder shimmer saat gambar belum load */
+.portfolio-item-inner img.loading {
+  min-height: 180px;
+  background: linear-gradient(90deg, var(--gray-mid) 25%, #252525 50%, var(--gray-mid) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Video badge overlay — absolute di atas gambar */
 .video-thumb { position: relative; }
 .video-play-badge {
   position: absolute;
@@ -526,6 +544,7 @@ section { padding: 100px 3rem; }
   justify-content: center;
   background: rgba(0,0,0,0.3);
   transition: background 0.2s;
+  pointer-events: none;
 }
 .portfolio-item:hover .video-play-badge { background: rgba(0,0,0,0.15); }
 .video-play-badge svg {
@@ -715,7 +734,8 @@ footer span {
   .avatar-frame::after { display: none; }
   .hero-content { padding: 0 1.25rem; }
   .hero-scroll { right: 1.25rem; }
-  .portfolio-item.featured { grid-column: span 1; aspect-ratio: 4/3; }
+  .portfolio-grid { columns: 1; }
+  .portfolio-item.featured { column-span: all; }
   .lightbox-prev { left: 10px; }
   .lightbox-next { right: 10px; }
   .lb-video-wrap { width: 95vw; }
