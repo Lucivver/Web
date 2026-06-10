@@ -404,36 +404,37 @@ section { padding: 100px 3rem; }
   align-items: center;
 }
 
-/* FIX: avatar-frame is the positioned parent for both img and border */
 .about-avatar {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: flex-start;
+  padding-bottom: 14px; /* room for the ::after border offset */
+  padding-right: 14px;
 }
 .avatar-frame {
-  left: 50%;
   position: relative;
-  display: inline-block; /* shrink-wrap to image size */
+  display: inline-block;
+  width: min(360px, 100%);
+  flex-shrink: 0;
 }
 .avatar-frame img {
   display: block;
   width: 100%;
-  max-width: 360px;
   aspect-ratio: 1;
   object-fit: cover;
   border-radius: 4px;
   filter: grayscale(20%);
   position: relative;
-  z-index: 1; /* sit above the border pseudo */
+  z-index: 1;
 }
 /* Border decoration — offset to bottom-right, behind image */
 .avatar-frame::after {
   content: '';
   position: absolute;
-  bottom: -14px;
-  right: -14px;
-  /* Match the img size exactly using inset trick */
   top: 14px;
   left: 14px;
+  right: -14px;
+  bottom: -14px;
   border: 1.5px solid var(--yellow);
   border-radius: 4px;
   z-index: 0;
@@ -726,10 +727,118 @@ footer span {
   color: var(--gray-text);
 }
 
+/* ── SHOW MORE BUTTON ──────────────────── */
+.portfolio-show-more-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0 8px;
+}
+.btn-show-more {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--white);
+  border: 1.5px solid var(--gray-mid);
+  padding: 12px 32px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.btn-show-more:hover {
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+.btn-show-more svg {
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+/* ── HAMBURGER BUTTON ──────────────────── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  width: 36px;
+  height: 36px;
+}
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 999px;
+  transition: transform 0.3s ease, opacity 0.2s;
+}
+.nav-hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── MOBILE NAV DRAWER ─────────────────── */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 56px;
+  left: 0; right: 0;
+  z-index: 99;
+  background: var(--black);
+  border-bottom: 1px solid var(--gray-mid);
+  padding: 24px 1.5rem 32px;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  pointer-events: none;
+}
+.mobile-nav.open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.mobile-nav ul { list-style: none; margin-bottom: 24px; }
+.mobile-nav ul li { border-bottom: 1px solid var(--gray-mid); }
+.mobile-nav ul a {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-text);
+  text-decoration: none;
+  padding: 14px 0;
+  transition: color 0.2s;
+}
+.mobile-nav ul a:hover { color: var(--white); }
+.mobile-nav-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  top: 56px;
+  z-index: 98;
+  background: rgba(0,0,0,0.5);
+}
+.mobile-nav-backdrop.open { display: block; }
+
 /* ── MOBILE ────────────────────────────── */
 @media (max-width: 768px) {
   nav { padding: 0 1.25rem; }
   .nav-links { display: none; }
+  .nav-cta { display: none; }
+  .nav-hamburger { display: flex; }
+  .mobile-nav { display: flex; }
+
   section { padding: 60px 1.25rem; }
   #about, #contact { grid-template-columns: 1fr; gap: 40px; }
   .avatar-frame::after { display: none; }
@@ -743,4 +852,16 @@ footer span {
   footer { flex-direction: column; gap: 12px; text-align: center; }
   .video-controls { padding: 10px 14px; gap: 8px; }
   .vc-time { display: none; }
+
+  /* Touch target size */
+  .vc-btn { width: 36px; height: 36px; }
+  .lightbox-nav { padding: 14px; }
+  .lightbox-close { top: 16px; right: 16px; padding: 10px; }
+
+  /* Show more mobile */
+  .btn-show-more { width: 100%; justify-content: center; }
+}
+
+@media (min-width: 480px) and (max-width: 768px) {
+  .portfolio-grid { columns: 2; }
 }
