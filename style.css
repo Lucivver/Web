@@ -496,7 +496,8 @@ section { padding: 100px 3rem; }
   position: relative;
   cursor: pointer;
 }
-.portfolio-item:first-child { grid-column: span 2; aspect-ratio: 16/7; }
+.portfolio-item.featured { grid-column: span 2; aspect-ratio: 16/7; }
+
 .portfolio-item-inner {
   width: 100%; height: 100%;
   background: var(--gray-mid);
@@ -504,13 +505,43 @@ section { padding: 100px 3rem; }
   align-items: center;
   justify-content: center;
   transition: transform 0.4s cubic-bezier(0.25,0,0,1);
-  font-family: var(--font-display);
-  font-size: 13px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--gray-text);
+  overflow: hidden;
+  position: relative;
 }
-.portfolio-item:hover .portfolio-item-inner { transform: scale(1.04); }
+.portfolio-item-inner img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.25,0,0,1);
+}
+.portfolio-item:hover .portfolio-item-inner img { transform: scale(1.05); }
+
+/* Video badge overlay */
+.video-thumb { position: relative; }
+.video-play-badge {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.3);
+  transition: background 0.2s;
+}
+.portfolio-item:hover .video-play-badge { background: rgba(0,0,0,0.15); }
+.video-play-badge svg {
+  width: 48px; height: 48px;
+  background: rgba(212,240,8,0.15);
+  border: 2px solid var(--yellow);
+  border-radius: 50%;
+  padding: 10px;
+  color: var(--yellow);
+  transition: transform 0.2s, background 0.2s;
+}
+.portfolio-item:hover .video-play-badge svg {
+  transform: scale(1.1);
+  background: rgba(212,240,8,0.28);
+}
+
 .portfolio-item-label {
   position: absolute;
   bottom: 0; left: 0; right: 0;
@@ -524,6 +555,89 @@ section { padding: 100px 3rem; }
   transition: opacity 0.2s;
 }
 .portfolio-item:hover .portfolio-item-label { opacity: 1; }
+
+/* ── LIGHTBOX ──────────────────────────── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,0.93);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.lightbox.active {
+  opacity: 1;
+  visibility: visible;
+}
+.lightbox-inner {
+  max-width: 90vw;
+  max-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lb-image {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 2px;
+  display: block;
+}
+.lb-video-wrap {
+  width: min(900px, 90vw);
+  aspect-ratio: 16/9;
+}
+.lb-video-wrap iframe {
+  width: 100%; height: 100%;
+  border: none;
+  border-radius: 2px;
+}
+.lightbox-caption {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(245,245,240,0.55);
+  white-space: nowrap;
+}
+.lightbox-close {
+  position: absolute;
+  top: 20px; right: 24px;
+  background: none; border: none;
+  color: rgba(245,245,240,0.6);
+  cursor: pointer;
+  padding: 6px;
+  transition: color 0.2s, transform 0.2s;
+  z-index: 10;
+}
+.lightbox-close:hover { color: var(--yellow); transform: scale(1.15); }
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--white);
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.lightbox-nav:hover { background: rgba(212,240,8,0.15); color: var(--yellow); transform: translateY(-50%) scale(1.1); }
+.lightbox-prev { left: 24px; }
+.lightbox-next { right: 24px; }
 
 /* ── CONTACT ───────────────────────────── */
 #contact {
@@ -601,7 +715,10 @@ footer span {
   .avatar-frame::after { display: none; }
   .hero-content { padding: 0 1.25rem; }
   .hero-scroll { right: 1.25rem; }
-  .portfolio-item:first-child { grid-column: span 1; aspect-ratio: 4/3; }
+  .portfolio-item.featured { grid-column: span 1; aspect-ratio: 4/3; }
+  .lightbox-prev { left: 10px; }
+  .lightbox-next { right: 10px; }
+  .lb-video-wrap { width: 95vw; }
   footer { flex-direction: column; gap: 12px; text-align: center; }
   .video-controls { padding: 10px 14px; gap: 8px; }
   .vc-time { display: none; }
