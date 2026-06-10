@@ -36,7 +36,22 @@
     <li><a href="#contact">Contact</a></li>
   </ul>
   <a class="nav-cta" href="#contact">Get In Touch</a>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE NAV DRAWER -->
+<div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+  <ul>
+    <li><a href="#" onclick="closeMobileNav()">Homepage</a></li>
+    <li><a href="#about" onclick="closeMobileNav()">About</a></li>
+    <li><a href="#portfolio" onclick="closeMobileNav()">Portfolio</a></li>
+    <li><a href="#contact" onclick="closeMobileNav()">Contact</a></li>
+  </ul>
+  <a class="btn-primary" href="#contact" onclick="closeMobileNav()">Get In Touch</a>
+</div>
+<div class="mobile-nav-backdrop" id="mobile-nav-backdrop" onclick="closeMobileNav()"></div>
 
 <!-- HERO -->
 <section class="hero">
@@ -125,6 +140,12 @@
 
   <!-- Rendered dynamically by JS -->
   <div class="portfolio-grid" id="portfolio-grid"></div>
+  <div class="portfolio-show-more-wrap" id="portfolio-show-more-wrap">
+    <button class="btn-show-more" id="btn-show-more">
+      <span id="show-more-label">Show More</span>
+      <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" id="show-more-icon"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+    </button>
+  </div>
 
 <!-- CONTACT -->
 <section id="contact">
@@ -278,89 +299,86 @@
 
 // ── PORTFOLIO RENDERER ────────────────────────────
 (function () {
-  // Build merged items list: images first, then videos
-  // Each item gets a `type` and index within its type group
   const allItems = [
     ...PORTFOLIO.images.map((item, i) => ({ ...item, type: 'images', typeIndex: i })),
     ...PORTFOLIO.videos.map((item, i) => ({ ...item, type: 'videos', typeIndex: i })),
   ];
 
-  const grid   = document.getElementById('portfolio-grid');
-  const tabs   = document.querySelectorAll('.tab-btn');
-  let currentTab = 'all';
+  const grid        = document.getElementById('portfolio-grid');
+  const tabs        = document.querySelectorAll('.tab-btn');
+  const showMoreWrap = document.getElementById('portfolio-show-more-wrap');
+  const showMoreBtn  = document.getElementById('btn-show-more');
+  const showMoreLabel = document.getElementById('show-more-label');
+  const showMoreIcon  = document.getElementById('show-more-icon');
 
-  // Google Drive URLs
+  const INITIAL_COUNT = 6;
+  let currentTab = 'all';
+  let expanded = false;
+
   const gdThumb  = (id) => `https://drive.google.com/thumbnail?id=${id}&sz=w800`;
   const gdEmbed  = (id) => `https://drive.google.com/file/d/${id}/preview`;
   const gdView   = (id) => `https://drive.google.com/file/d/${id}/view`;
 
-  function renderGrid(tab) {
-    const items = tab === 'all' ? allItems : allItems.filter(i => i.type === tab);
-    grid.innerHTML = '';
+  function makeItem(item, idx, items) {
+    const el = document.createElement('div');
+    el.className = 'portfolio-item';
 
-    items.forEach((item, idx) => {
-      const el = document.createElement('div');
-      el.className = 'portfolio-item';
-
-      if (item.type === 'images') {
-        const img = document.createElement('img');
-        img.src = gdThumb(item.id);
-        img.alt = item.title;
-        img.className = 'loading';
-        img.loading = 'lazy';
-        // Shimmer sampai load, lalu height alami gambar tampil
-        img.addEventListener('load',  () => img.classList.remove('loading'));
-        img.addEventListener('error', () => {
-          img.classList.remove('loading');
-          img.style.display = 'none';
-        });
-
-        const inner = document.createElement('div');
-        inner.className = 'portfolio-item-inner';
-        inner.appendChild(img);
-
-        const label = document.createElement('div');
-        label.className = 'portfolio-item-label';
-        label.textContent = item.title;
-
-        el.appendChild(inner);
-        el.appendChild(label);
-        el.addEventListener('click', () => openLightbox(items, idx));
-
-      } else {
-        // Video: thumbnail adaptif + play badge di atas
-        const img = document.createElement('img');
-        img.src = gdThumb(item.id);
-        img.alt = item.title;
-        img.className = 'loading';
-        img.loading = 'lazy';
-        img.addEventListener('load',  () => img.classList.remove('loading'));
-        img.addEventListener('error', () => {
-          img.classList.remove('loading');
-          img.style.minHeight = '180px';
-        });
-
-        const badge = document.createElement('div');
-        badge.className = 'video-play-badge';
-        badge.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M8 5v14l11-7z"/></svg>`;
-
-        const inner = document.createElement('div');
-        inner.className = 'portfolio-item-inner video-thumb';
-        inner.appendChild(img);
-        inner.appendChild(badge);
-
-        const label = document.createElement('div');
-        label.className = 'portfolio-item-label';
-        label.textContent = item.title;
-
-        el.appendChild(inner);
-        el.appendChild(label);
-        el.addEventListener('click', () => openLightbox(items, idx));
-      }
-
-      grid.appendChild(el);
+    const img = document.createElement('img');
+    img.src = gdThumb(item.id);
+    img.alt = item.title;
+    img.className = 'loading';
+    img.loading = 'lazy';
+    img.addEventListener('load',  () => img.classList.remove('loading'));
+    img.addEventListener('error', () => {
+      img.classList.remove('loading');
+      img.style.minHeight = '180px';
+      if (item.type === 'images') img.style.display = 'none';
     });
+
+    const inner = document.createElement('div');
+    inner.className = 'portfolio-item-inner' + (item.type === 'videos' ? ' video-thumb' : '');
+    inner.appendChild(img);
+
+    if (item.type === 'videos') {
+      const badge = document.createElement('div');
+      badge.className = 'video-play-badge';
+      badge.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M8 5v14l11-7z"/></svg>`;
+      inner.appendChild(badge);
+    }
+
+    const label = document.createElement('div');
+    label.className = 'portfolio-item-label';
+    label.textContent = item.title;
+
+    el.appendChild(inner);
+    el.appendChild(label);
+    el.addEventListener('click', () => openLightbox(items, idx));
+    return el;
   }
+
+  function renderGrid(tab, showAll) {
+    const items = tab === 'all' ? allItems : allItems.filter(i => i.type === tab);
+    const visible = showAll ? items : items.slice(0, INITIAL_COUNT);
+    grid.innerHTML = '';
+    visible.forEach((item, idx) => grid.appendChild(makeItem(item, idx, visible)));
+
+    // Show/hide "Show More" button
+    if (items.length > INITIAL_COUNT) {
+      showMoreWrap.style.display = 'flex';
+      showMoreLabel.textContent = showAll ? 'Show Less' : 'Show More';
+      showMoreIcon.style.transform = showAll ? 'rotate(180deg)' : 'rotate(0deg)';
+    } else {
+      showMoreWrap.style.display = 'none';
+    }
+  }
+
+  showMoreBtn.addEventListener('click', () => {
+    expanded = !expanded;
+    renderGrid(currentTab, expanded);
+    if (!expanded) {
+      document.getElementById('portfolio').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
 
   // ── LIGHTBOX ──────────────────────────────────
   const lb        = document.getElementById('lightbox');
@@ -384,16 +402,14 @@
   function closeLightbox() {
     lb.classList.remove('active');
     document.body.style.overflow = '';
-    lbInner.innerHTML = ''; // stop video
+    lbInner.innerHTML = '';
   }
 
   function renderLightboxItem() {
     const item = lbItems[lbIndex];
     lbCaption.textContent = item.title;
-
     lbPrev.style.visibility = lbIndex > 0 ? 'visible' : 'hidden';
     lbNext.style.visibility = lbIndex < lbItems.length - 1 ? 'visible' : 'hidden';
-
     lbInner.innerHTML = '';
 
     if (item.type === 'images') {
@@ -401,54 +417,68 @@
       img.src = gdThumb(item.id);
       img.alt = item.title;
       img.className = 'lb-image';
-      // Link to full Drive view
       img.style.cursor = 'zoom-in';
       img.addEventListener('click', () => window.open(gdView(item.id), '_blank'));
       lbInner.appendChild(img);
     } else {
-      // Video embed
       const wrap = document.createElement('div');
       wrap.className = 'lb-video-wrap';
-      wrap.innerHTML = `<iframe
-        src="${gdEmbed(item.id)}"
-        allow="autoplay"
-        allowfullscreen
-        frameborder="0"
-      ></iframe>`;
+      wrap.innerHTML = `<iframe src="${gdEmbed(item.id)}" allow="autoplay" allowfullscreen frameborder="0"></iframe>`;
       lbInner.appendChild(wrap);
     }
   }
 
   lbClose.addEventListener('click', closeLightbox);
   lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+  lbPrev.addEventListener('click', () => { if (lbIndex > 0) { lbIndex--; renderLightboxItem(); } });
+  lbNext.addEventListener('click', () => { if (lbIndex < lbItems.length - 1) { lbIndex++; renderLightboxItem(); } });
 
-  lbPrev.addEventListener('click', () => {
-    if (lbIndex > 0) { lbIndex--; renderLightboxItem(); }
-  });
-  lbNext.addEventListener('click', () => {
-    if (lbIndex < lbItems.length - 1) { lbIndex++; renderLightboxItem(); }
-  });
+  // Touch swipe for lightbox
+  let touchStartX = 0;
+  lb.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0 && lbIndex < lbItems.length - 1) { lbIndex++; renderLightboxItem(); }
+      if (dx > 0 && lbIndex > 0) { lbIndex--; renderLightboxItem(); }
+    }
+  }, { passive: true });
 
-  // Keyboard nav
   document.addEventListener('keydown', (e) => {
     if (!lb.classList.contains('active')) return;
-    if (e.key === 'Escape')      closeLightbox();
-    if (e.key === 'ArrowLeft'  && lbIndex > 0)                 { lbIndex--; renderLightboxItem(); }
-    if (e.key === 'ArrowRight' && lbIndex < lbItems.length - 1){ lbIndex++; renderLightboxItem(); }
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowLeft'  && lbIndex > 0)                  { lbIndex--; renderLightboxItem(); }
+    if (e.key === 'ArrowRight' && lbIndex < lbItems.length - 1) { lbIndex++; renderLightboxItem(); }
   });
 
-  // ── TAB SWITCHING ─────────────────────────────
   tabs.forEach(btn => {
     btn.addEventListener('click', () => {
       tabs.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       currentTab = btn.dataset.tab;
-      renderGrid(currentTab);
+      expanded = false;
+      renderGrid(currentTab, false);
     });
   });
 
-  // Initial render
-  renderGrid('all');
+  renderGrid('all', false);
+})();
+
+// ── MOBILE NAV ────────────────────────────────────
+function closeMobileNav() {
+  document.getElementById('mobile-nav').classList.remove('open');
+  document.getElementById('mobile-nav-backdrop').classList.remove('open');
+  document.getElementById('nav-hamburger').setAttribute('aria-expanded', 'false');
+}
+(function () {
+  const hamburger = document.getElementById('nav-hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+  const backdrop  = document.getElementById('mobile-nav-backdrop');
+  hamburger.addEventListener('click', () => {
+    const isOpen = mobileNav.classList.toggle('open');
+    backdrop.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', isOpen);
+  });
 })();
 
 // ── SCROLL NAV ACTIVE ─────────────────────────────
