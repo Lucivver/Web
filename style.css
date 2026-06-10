@@ -410,6 +410,7 @@ section { padding: 100px 3rem; }
   justify-content: flex-start;
 }
 .avatar-frame {
+  left: 50%;
   position: relative;
   display: inline-block; /* shrink-wrap to image size */
 }
