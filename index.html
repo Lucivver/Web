@@ -308,47 +308,65 @@
     items.forEach((item, idx) => {
       const el = document.createElement('div');
       el.className = 'portfolio-item';
-      el.dataset.index = idx;        // index in current filtered list
-      el.dataset.globalIndex = allItems.indexOf(item);
 
       if (item.type === 'images') {
-        // Image: thumbnail from Drive
-        el.innerHTML = `
-          <div class="portfolio-item-inner" style="background:#111;">
-            <img
-              src="${gdThumb(item.id)}"
-              alt="${item.title}"
-              loading="lazy"
-              onerror="this.style.display='none'"
-            />
-          </div>
-          <div class="portfolio-item-label">${item.title}</div>`;
-        el.addEventListener('click', () => openLightbox(items, idx, tab));
+        const img = document.createElement('img');
+        img.src = gdThumb(item.id);
+        img.alt = item.title;
+        img.className = 'loading';
+        img.loading = 'lazy';
+        // Shimmer sampai load, lalu height alami gambar tampil
+        img.addEventListener('load',  () => img.classList.remove('loading'));
+        img.addEventListener('error', () => {
+          img.classList.remove('loading');
+          img.style.display = 'none';
+        });
+
+        const inner = document.createElement('div');
+        inner.className = 'portfolio-item-inner';
+        inner.appendChild(img);
+
+        const label = document.createElement('div');
+        label.className = 'portfolio-item-label';
+        label.textContent = item.title;
+
+        el.appendChild(inner);
+        el.appendChild(label);
+        el.addEventListener('click', () => openLightbox(items, idx));
 
       } else {
-        // Video: thumbnail + play icon overlay
-        el.innerHTML = `
-          <div class="portfolio-item-inner video-thumb" style="background:#111;">
-            <img
-              src="${gdThumb(item.id)}"
-              alt="${item.title}"
-              loading="lazy"
-              onerror="this.style.display='none'"
-            />
-            <div class="video-play-badge">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-          </div>
-          <div class="portfolio-item-label">${item.title}</div>`;
-        el.addEventListener('click', () => openLightbox(items, idx, tab));
+        // Video: thumbnail adaptif + play badge di atas
+        const img = document.createElement('img');
+        img.src = gdThumb(item.id);
+        img.alt = item.title;
+        img.className = 'loading';
+        img.loading = 'lazy';
+        img.addEventListener('load',  () => img.classList.remove('loading'));
+        img.addEventListener('error', () => {
+          img.classList.remove('loading');
+          img.style.minHeight = '180px';
+        });
+
+        const badge = document.createElement('div');
+        badge.className = 'video-play-badge';
+        badge.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M8 5v14l11-7z"/></svg>`;
+
+        const inner = document.createElement('div');
+        inner.className = 'portfolio-item-inner video-thumb';
+        inner.appendChild(img);
+        inner.appendChild(badge);
+
+        const label = document.createElement('div');
+        label.className = 'portfolio-item-label';
+        label.textContent = item.title;
+
+        el.appendChild(inner);
+        el.appendChild(label);
+        el.addEventListener('click', () => openLightbox(items, idx));
       }
 
       grid.appendChild(el);
     });
-
-    // First image item gets featured span-2
-    const firstImageEl = grid.querySelector('.portfolio-item');
-    if (firstImageEl) firstImageEl.classList.add('featured');
   }
 
   // ── LIGHTBOX ──────────────────────────────────
@@ -362,7 +380,7 @@
   let lbItems = [];
   let lbIndex = 0;
 
-  function openLightbox(items, index, tab) {
+  function openLightbox(items, index) {
     lbItems = items;
     lbIndex = index;
     lb.classList.add('active');
