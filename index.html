@@ -40,18 +40,15 @@
 
 <!-- HERO -->
 <section class="hero">
-  <!-- Custom Video Player -->
   <div class="hero-video-wrap">
     <video class="hero-video" id="hero-video" autoplay muted loop playsinline>
       <source src="Image/Bg.mp4" type="video/mp4" />
     </video>
-    <!-- Thumbnail shown before video loads -->
     <div class="video-thumbnail" id="video-thumbnail">
       <div class="thumbnail-play-btn" id="thumbnail-play-btn">
         <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M8 5v14l11-7z"/></svg>
       </div>
     </div>
-    <!-- Custom Controls -->
     <div class="video-controls" id="video-controls">
       <div class="vc-left">
         <button class="vc-btn" id="vc-play" aria-label="Play/Pause">
@@ -98,7 +95,6 @@
 
 <!-- ABOUT -->
 <section id="about">
-  <!-- FIX: avatar-frame wraps both image and border decoration -->
   <div class="about-avatar">
     <div class="avatar-frame">
       <img src="https://lucivver.github.io/Web/Image/icon.jpg" alt="Lucivver avatar" />
@@ -124,35 +120,14 @@
   <h2 class="section-title">Portfolio</h2>
 
   <div class="portfolio-tabs">
-    <button class="tab-btn active" onclick="switchTab(this,'all')">All</button>
-    <button class="tab-btn" onclick="switchTab(this,'images')">Images</button>
-    <button class="tab-btn" onclick="switchTab(this,'videos')">Videos</button>
+    <button class="tab-btn active" data-tab="all">All</button>
+    <button class="tab-btn" data-tab="images">Images</button>
+    <button class="tab-btn" data-tab="videos">Videos</button>
   </div>
 
-  <div class="portfolio-grid">
-    <div class="portfolio-item">
-      <div class="portfolio-item-inner" style="background:#1c1c1c;">
-        <span>Featured Work</span>
-      </div>
-      <div class="portfolio-item-label">Featured — 2025</div>
-    </div>
-    <div class="portfolio-item">
-      <div class="portfolio-item-inner"></div>
-      <div class="portfolio-item-label">Illustration 01</div>
-    </div>
-    <div class="portfolio-item">
-      <div class="portfolio-item-inner"></div>
-      <div class="portfolio-item-label">Illustration 02</div>
-    </div>
-    <div class="portfolio-item">
-      <div class="portfolio-item-inner"></div>
-      <div class="portfolio-item-label">Video Edit 01</div>
-    </div>
-    <div class="portfolio-item">
-      <div class="portfolio-item-inner"></div>
-      <div class="portfolio-item-label">Visual Design 01</div>
-    </div>
-  </div>
+  <!-- Rendered dynamically by JS -->
+  <div class="portfolio-grid" id="portfolio-grid"></div>
+
   <div style="margin-top:40px; text-align:center;">
     <a class="btn-ghost" href="https://drive.google.com/drive/u/1/folders/1O1LcgzhCYMLV_0OG6gwEIl_ilZXfz9cQ" target="_blank" style="display:inline-block;">See Full Archive</a>
   </div>
@@ -165,24 +140,15 @@
     <h2 class="section-title">Let's<br/>Talk</h2>
     <div class="contact-links">
       <a class="contact-link" href="https://discord.com/users/617624176374579201" target="_blank">
-        <div>
-          <p class="link-platform">Chat</p>
-          <p class="link-handle">Discord</p>
-        </div>
+        <div><p class="link-platform">Chat</p><p class="link-handle">Discord</p></div>
         <span class="link-arrow">↗</span>
       </a>
       <a class="contact-link" href="https://wa.me/6285179769545" target="_blank">
-        <div>
-          <p class="link-platform">Message</p>
-          <p class="link-handle">WhatsApp</p>
-        </div>
+        <div><p class="link-platform">Message</p><p class="link-handle">WhatsApp</p></div>
         <span class="link-arrow">↗</span>
       </a>
       <a class="contact-link" href="mailto:lucivvermail@gmail.com">
-        <div>
-          <p class="link-platform">Email</p>
-          <p class="link-handle">Gmail</p>
-        </div>
+        <div><p class="link-platform">Email</p><p class="link-handle">Gmail</p></div>
         <span class="link-arrow">↗</span>
       </a>
     </div>
@@ -194,17 +160,11 @@
     <p>Stay updated with my latest projects and daily creative content across social media.</p>
     <div class="contact-links">
       <a class="contact-link" href="https://x.com/lucky4lucifer" target="_blank">
-        <div>
-          <p class="link-platform">Micro-blog</p>
-          <p class="link-handle">Twitter / X</p>
-        </div>
+        <div><p class="link-platform">Micro-blog</p><p class="link-handle">Twitter / X</p></div>
         <span class="link-arrow">↗</span>
       </a>
       <a class="contact-link" href="https://instagram.com/Lucivver_" target="_blank">
-        <div>
-          <p class="link-platform">Photography & Art</p>
-          <p class="link-handle">Instagram</p>
-        </div>
+        <div><p class="link-platform">Photography & Art</p><p class="link-handle">Instagram</p></div>
         <span class="link-arrow">↗</span>
       </a>
     </div>
@@ -219,141 +179,274 @@
 
 </div><!-- /#main-content -->
 
+<!-- LIGHTBOX MODAL -->
+<div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Portfolio viewer">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Close">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+  </button>
+  <div class="lightbox-inner" id="lightbox-inner"></div>
+  <div class="lightbox-caption" id="lightbox-caption"></div>
+  <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Previous">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+  </button>
+  <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Next">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+  </button>
+</div>
+
+<!-- PORTFOLIO CONFIG -->
+<script src="portfolio-config.js"></script>
+
 <script>
-  // ── LOADER ────────────────────────────────────────
-  (function () {
-    const bar     = document.getElementById('loader-bar');
-    const pct     = document.getElementById('loader-percent');
-    const loader  = document.getElementById('loader');
-    const content = document.getElementById('main-content');
-    let tick = 0;
-    const duration = 2000, interval = 40, steps = duration / interval;
-    function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
-    const timer = setInterval(() => {
-      tick++;
-      const progress = Math.min(100, Math.round(easeOut(tick / steps) * 100));
-      bar.style.width = progress + '%';
-      pct.textContent = progress + '%';
-      if (progress >= 100) {
-        clearInterval(timer);
-        setTimeout(() => {
-          loader.classList.add('hidden');
-          content.classList.add('visible');
-        }, 350);
-      }
-    }, interval);
-  })();
-
-  // ── VIDEO PLAYER ──────────────────────────────────
-  (function () {
-    const video     = document.getElementById('hero-video');
-    const thumbnail = document.getElementById('video-thumbnail');
-    const controls  = document.getElementById('video-controls');
-    const btnPlay   = document.getElementById('vc-play');
-    const btnMute   = document.getElementById('vc-mute');
-    const btnFs     = document.getElementById('vc-fullscreen');
-    const timeEl    = document.getElementById('vc-time');
-    const fill      = document.getElementById('vc-progress-fill');
-    const thumb     = document.getElementById('vc-progress-thumb');
-    const progressWrap = document.getElementById('vc-progress-wrap');
-    const wrap      = document.querySelector('.hero-video-wrap');
-
-    const iconPlay  = btnPlay.querySelector('.icon-play');
-    const iconPause = btnPlay.querySelector('.icon-pause');
-    const iconVol   = btnMute.querySelector('.icon-vol');
-    const iconMuteI = btnMute.querySelector('.icon-mute');
-
-    // Hide thumbnail once video is playing
-    video.addEventListener('playing', () => {
-      thumbnail.style.opacity = '0';
-      thumbnail.style.pointerEvents = 'none';
-    });
-    video.addEventListener('pause', () => {
-      iconPlay.style.display = '';
-      iconPause.style.display = 'none';
-    });
-    video.addEventListener('play', () => {
-      iconPlay.style.display = 'none';
-      iconPause.style.display = '';
-    });
-
-    // Thumbnail play button
-    document.getElementById('thumbnail-play-btn').addEventListener('click', () => {
-      video.play();
-    });
-
-    // Play/pause
-    btnPlay.addEventListener('click', () => {
-      video.paused ? video.play() : video.pause();
-    });
-
-    // Mute
-    btnMute.addEventListener('click', () => {
-      video.muted = !video.muted;
-      iconVol.style.display  = video.muted ? 'none' : '';
-      iconMuteI.style.display = video.muted ? '' : 'none';
-    });
-
-    // Time update
-    function formatTime(s) {
-      const m = Math.floor(s / 60);
-      const sec = Math.floor(s % 60);
-      return m + ':' + (sec < 10 ? '0' : '') + sec;
+// ── LOADER ────────────────────────────────────────
+(function () {
+  const bar     = document.getElementById('loader-bar');
+  const pct     = document.getElementById('loader-percent');
+  const loader  = document.getElementById('loader');
+  const content = document.getElementById('main-content');
+  let tick = 0;
+  const duration = 2000, interval = 40, steps = duration / interval;
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+  const timer = setInterval(() => {
+    tick++;
+    const progress = Math.min(100, Math.round(easeOut(tick / steps) * 100));
+    bar.style.width = progress + '%';
+    pct.textContent = progress + '%';
+    if (progress >= 100) {
+      clearInterval(timer);
+      setTimeout(() => {
+        loader.classList.add('hidden');
+        content.classList.add('visible');
+      }, 350);
     }
-    video.addEventListener('timeupdate', () => {
-      if (!video.duration) return;
-      const pct = (video.currentTime / video.duration) * 100;
-      fill.style.width  = pct + '%';
-      thumb.style.left  = pct + '%';
-      timeEl.textContent = formatTime(video.currentTime) + ' / ' + formatTime(video.duration);
-    });
+  }, interval);
+})();
 
-    // Seek on progress bar
-    progressWrap.addEventListener('click', (e) => {
-      const rect = progressWrap.getBoundingClientRect();
-      const pct  = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-      video.currentTime = pct * video.duration;
-    });
+// ── HERO VIDEO PLAYER ─────────────────────────────
+(function () {
+  const video        = document.getElementById('hero-video');
+  const thumbnail    = document.getElementById('video-thumbnail');
+  const controls     = document.getElementById('video-controls');
+  const btnPlay      = document.getElementById('vc-play');
+  const btnMute      = document.getElementById('vc-mute');
+  const btnFs        = document.getElementById('vc-fullscreen');
+  const timeEl       = document.getElementById('vc-time');
+  const fill         = document.getElementById('vc-progress-fill');
+  const thumbEl      = document.getElementById('vc-progress-thumb');
+  const progressWrap = document.getElementById('vc-progress-wrap');
+  const wrap         = document.querySelector('.hero-video-wrap');
 
-    // Fullscreen
-    btnFs.addEventListener('click', () => {
-      if (!document.fullscreenElement) {
-        wrap.requestFullscreen && wrap.requestFullscreen();
+  const iconPlay  = btnPlay.querySelector('.icon-play');
+  const iconPause = btnPlay.querySelector('.icon-pause');
+  const iconVol   = btnMute.querySelector('.icon-vol');
+  const iconMuteI = btnMute.querySelector('.icon-mute');
+
+  video.addEventListener('playing', () => {
+    thumbnail.style.opacity = '0';
+    thumbnail.style.pointerEvents = 'none';
+  });
+  video.addEventListener('pause',  () => { iconPlay.style.display = ''; iconPause.style.display = 'none'; });
+  video.addEventListener('play',   () => { iconPlay.style.display = 'none'; iconPause.style.display = ''; });
+
+  document.getElementById('thumbnail-play-btn').addEventListener('click', () => video.play());
+  btnPlay.addEventListener('click', () => video.paused ? video.play() : video.pause());
+  btnMute.addEventListener('click', () => {
+    video.muted = !video.muted;
+    iconVol.style.display   = video.muted ? 'none' : '';
+    iconMuteI.style.display = video.muted ? '' : 'none';
+  });
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+  }
+  video.addEventListener('timeupdate', () => {
+    if (!video.duration) return;
+    const p = (video.currentTime / video.duration) * 100;
+    fill.style.width = p + '%';
+    thumbEl.style.left = p + '%';
+    timeEl.textContent = formatTime(video.currentTime) + ' / ' + formatTime(video.duration);
+  });
+  progressWrap.addEventListener('click', (e) => {
+    const rect = progressWrap.getBoundingClientRect();
+    video.currentTime = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width)) * video.duration;
+  });
+  btnFs.addEventListener('click', () => {
+    document.fullscreenElement ? document.exitFullscreen() : wrap.requestFullscreen && wrap.requestFullscreen();
+  });
+
+  let hideTimer;
+  const showControls = () => { controls.style.opacity = '1'; clearTimeout(hideTimer); };
+  const schedHide    = (ms) => { hideTimer = setTimeout(() => controls.style.opacity = '0', ms); };
+  wrap.addEventListener('mouseenter', () => showControls());
+  wrap.addEventListener('mouseleave', () => schedHide(1800));
+  wrap.addEventListener('mousemove',  () => { showControls(); schedHide(2500); });
+})();
+
+// ── PORTFOLIO RENDERER ────────────────────────────
+(function () {
+  // Build merged items list: images first, then videos
+  // Each item gets a `type` and index within its type group
+  const allItems = [
+    ...PORTFOLIO.images.map((item, i) => ({ ...item, type: 'images', typeIndex: i })),
+    ...PORTFOLIO.videos.map((item, i) => ({ ...item, type: 'videos', typeIndex: i })),
+  ];
+
+  const grid   = document.getElementById('portfolio-grid');
+  const tabs   = document.querySelectorAll('.tab-btn');
+  let currentTab = 'all';
+
+  // Google Drive URLs
+  const gdThumb  = (id) => `https://drive.google.com/thumbnail?id=${id}&sz=w800`;
+  const gdEmbed  = (id) => `https://drive.google.com/file/d/${id}/preview`;
+  const gdView   = (id) => `https://drive.google.com/file/d/${id}/view`;
+
+  function renderGrid(tab) {
+    const items = tab === 'all' ? allItems : allItems.filter(i => i.type === tab);
+    grid.innerHTML = '';
+
+    items.forEach((item, idx) => {
+      const el = document.createElement('div');
+      el.className = 'portfolio-item';
+      el.dataset.index = idx;        // index in current filtered list
+      el.dataset.globalIndex = allItems.indexOf(item);
+
+      if (item.type === 'images') {
+        // Image: thumbnail from Drive
+        el.innerHTML = `
+          <div class="portfolio-item-inner" style="background:#111;">
+            <img
+              src="${gdThumb(item.id)}"
+              alt="${item.title}"
+              loading="lazy"
+              onerror="this.style.display='none'"
+            />
+          </div>
+          <div class="portfolio-item-label">${item.title}</div>`;
+        el.addEventListener('click', () => openLightbox(items, idx, tab));
+
       } else {
-        document.exitFullscreen && document.exitFullscreen();
+        // Video: thumbnail + play icon overlay
+        el.innerHTML = `
+          <div class="portfolio-item-inner video-thumb" style="background:#111;">
+            <img
+              src="${gdThumb(item.id)}"
+              alt="${item.title}"
+              loading="lazy"
+              onerror="this.style.display='none'"
+            />
+            <div class="video-play-badge">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+          <div class="portfolio-item-label">${item.title}</div>`;
+        el.addEventListener('click', () => openLightbox(items, idx, tab));
       }
+
+      grid.appendChild(el);
     });
 
-    // Auto-show controls on hover
-    let hideTimer;
-    wrap.addEventListener('mouseenter', () => {
-      controls.style.opacity = '1';
-      clearTimeout(hideTimer);
-    });
-    wrap.addEventListener('mouseleave', () => {
-      hideTimer = setTimeout(() => { controls.style.opacity = '0'; }, 1800);
-    });
-    wrap.addEventListener('mousemove', () => {
-      controls.style.opacity = '1';
-      clearTimeout(hideTimer);
-      hideTimer = setTimeout(() => { controls.style.opacity = '0'; }, 2500);
-    });
-  })();
-
-  // ── TABS ─────────────────────────────────────────
-  function switchTab(btn, tab) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    // First image item gets featured span-2
+    const firstImageEl = grid.querySelector('.portfolio-item');
+    if (firstImageEl) firstImageEl.classList.add('featured');
   }
 
-  // ── SCROLL NAV ACTIVE ─────────────────────────────
+  // ── LIGHTBOX ──────────────────────────────────
+  const lb        = document.getElementById('lightbox');
+  const lbInner   = document.getElementById('lightbox-inner');
+  const lbCaption = document.getElementById('lightbox-caption');
+  const lbClose   = document.getElementById('lightbox-close');
+  const lbPrev    = document.getElementById('lightbox-prev');
+  const lbNext    = document.getElementById('lightbox-next');
+
+  let lbItems = [];
+  let lbIndex = 0;
+
+  function openLightbox(items, index, tab) {
+    lbItems = items;
+    lbIndex = index;
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    renderLightboxItem();
+  }
+
+  function closeLightbox() {
+    lb.classList.remove('active');
+    document.body.style.overflow = '';
+    lbInner.innerHTML = ''; // stop video
+  }
+
+  function renderLightboxItem() {
+    const item = lbItems[lbIndex];
+    lbCaption.textContent = item.title;
+
+    lbPrev.style.visibility = lbIndex > 0 ? 'visible' : 'hidden';
+    lbNext.style.visibility = lbIndex < lbItems.length - 1 ? 'visible' : 'hidden';
+
+    lbInner.innerHTML = '';
+
+    if (item.type === 'images') {
+      const img = document.createElement('img');
+      img.src = gdThumb(item.id);
+      img.alt = item.title;
+      img.className = 'lb-image';
+      // Link to full Drive view
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', () => window.open(gdView(item.id), '_blank'));
+      lbInner.appendChild(img);
+    } else {
+      // Video embed
+      const wrap = document.createElement('div');
+      wrap.className = 'lb-video-wrap';
+      wrap.innerHTML = `<iframe
+        src="${gdEmbed(item.id)}"
+        allow="autoplay"
+        allowfullscreen
+        frameborder="0"
+      ></iframe>`;
+      lbInner.appendChild(wrap);
+    }
+  }
+
+  lbClose.addEventListener('click', closeLightbox);
+  lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+
+  lbPrev.addEventListener('click', () => {
+    if (lbIndex > 0) { lbIndex--; renderLightboxItem(); }
+  });
+  lbNext.addEventListener('click', () => {
+    if (lbIndex < lbItems.length - 1) { lbIndex++; renderLightboxItem(); }
+  });
+
+  // Keyboard nav
+  document.addEventListener('keydown', (e) => {
+    if (!lb.classList.contains('active')) return;
+    if (e.key === 'Escape')      closeLightbox();
+    if (e.key === 'ArrowLeft'  && lbIndex > 0)                 { lbIndex--; renderLightboxItem(); }
+    if (e.key === 'ArrowRight' && lbIndex < lbItems.length - 1){ lbIndex++; renderLightboxItem(); }
+  });
+
+  // ── TAB SWITCHING ─────────────────────────────
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabs.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentTab = btn.dataset.tab;
+      renderGrid(currentTab);
+    });
+  });
+
+  // Initial render
+  renderGrid('all');
+})();
+
+// ── SCROLL NAV ACTIVE ─────────────────────────────
+(function () {
   const navLinks = document.querySelectorAll('.nav-links a');
   const sections = document.querySelectorAll('section[id]');
   window.addEventListener('scroll', () => {
     let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 80) current = s.id;
-    });
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
     navLinks.forEach(a => {
       a.classList.remove('active');
       if (a.getAttribute('href') === '#' + current || (current === '' && a.getAttribute('href') === '#')) {
@@ -361,6 +454,7 @@
       }
     });
   });
+})();
 </script>
 </body>
 </html>
